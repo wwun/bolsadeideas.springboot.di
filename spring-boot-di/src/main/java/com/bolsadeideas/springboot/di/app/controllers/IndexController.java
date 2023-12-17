@@ -9,7 +9,7 @@ import com.bolsadeideas.springboot.di.app.models.service.MiServicio;
 
 @Controller
 public class IndexController {
-	//private MiServicio servicio = new MiServicio(); //para desacoplar, se hace uso de Autowire
+	//private MiServicio servicio = new MiServicio(); //para desacoplar, se hace uso de Autowired
 	
 	@Autowired
 	private MiServicio servicio;
