@@ -1,17 +1,24 @@
 package com.bolsadeideas.springboot.di.app.models.domain;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.RequestScope;
+import org.springframework.web.context.annotation.SessionScope;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 
 @Component
-public class Factura {
+//@RequestScope	//cambia el componente y deja de ser singleton por defecto y va a durar lo que dura una petición, cada usuario va a tener una factura distinta
+@SessionScope	//dura lo que dura una sesión incluyendo time out o se si se envalida la sesión, debe implementar serializable
+public class Factura implements Serializable{ //implementa serializable porque se está usando sessionScope
+
+	private static final long serialVersionUID = 946004357128146951L;	//se debe generar al implementar serializable
 
 	@Value("${factura.descripcion}")
 	private String descripcion;
@@ -29,7 +36,7 @@ public class Factura {
 		descripcion = descripcion.concat(" del cliente: ").concat(cliente.getNombre());
 	}
 	
-	@PreDestroy
+	@PreDestroy	//esta etiqueta no  se ejecuta cuando se trabaja con @SessionScope sino con @RequestScope
 	public void destruir() {
 		System.out.println("Factura destruida: ".concat("descripcion"));
 	}
